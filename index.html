@@ -24,7 +24,7 @@
             }
 
             try {
-                const response = await fetch('<YOUR_BACKEND_URL>/generate', {
+                const response = await fetch('https://bananagrams-backend.onrender.com/generate', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -37,7 +37,11 @@
                 }
 
                 const data = await response.json();
-                resultsDiv.textContent = data.words.join("\n");
+                if (data.words.length > 0) {
+                    resultsDiv.textContent = data.words.join("\n");
+                } else {
+                    resultsDiv.textContent = "No words could be generated with the given tiles.";
+                }
             } catch (error) {
                 resultsDiv.textContent = `Error: ${error.message}`;
             }
