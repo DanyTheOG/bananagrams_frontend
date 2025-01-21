@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanish Bananagrams Solver</title>
+</head>
+<body>
+    <h1>Spanish Bananagrams Solver</h1>
+    <p>Enter your tiles to generate words:</p>
+    <textarea id="tiles" placeholder="Enter tiles (e.g., A,B,CH,RR)"></textarea><br><br>
+    <button onclick="generateWords()">Generate Words</button>
+    <h2>Results:</h2>
+    <pre id="results">Results will appear here...</pre>
+
+    <script>
+        async function generateWords() {
+            const tiles = document.getElementById('tiles').value;
+            const resultsDiv = document.getElementById('results');
+            
+            if (!tiles) {
+                resultsDiv.textContent = "Please enter some tiles.";
+                return;
+            }
+
+            try {
+                const response = await fetch('<YOUR_BACKEND_URL>/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ tiles })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch results");
+                }
+
+                const data = await response.json();
+                resultsDiv.textContent = data.words.join("\n");
+            } catch (error) {
+                resultsDiv.textContent = `Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
